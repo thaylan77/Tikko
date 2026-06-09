@@ -1,0 +1,68 @@
+name: Test backend
+
+on:
+  pull_request:
+    paths:
+      - "backend/**"
+
+  push:
+    branches:
+      - master
+    paths:
+      - "backend/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: whaticket_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        working-directory: backend
+        run: npm install
+
+      # As migrations rodam contra dist/ (ver .sequelizerc), então buildamos antes.
+      - name: Build
+        working-directory: backend
+        run: npm run build
+
+      # .env.test é exigido pelo bootstrap (fail-fast de JWT) e pela config do banco.
+      - name: Create .env.test
+        working-directory: backend
+        run: |
+          cat > .env.test <<'EOF'
+          NODE_ENV=test
+          DB_DIALECT=mysql
+          DB_HOST=127.0.0.1
+          DB_PORT=3306
+          DB_NAME=whaticket_test
+          DB_USER=root
+          DB_PASS=root
+          JWT_SECRET=ci-test-secret-not-for-production
+          JWT_REFRESH_SECRET=ci-test-refresh-secret-not-for-production
+          EOF
+
+      - name: Run tests
+        working-directory: backend
+        run: npm test
