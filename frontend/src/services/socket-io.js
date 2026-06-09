@@ -4,7 +4,7 @@ import { getBackendUrl } from "../config";
 function connectToSocket() {
     const token = localStorage.getItem("token");
     return openSocket(getBackendUrl(), {
-      transports: ["websocket", "polling", "flashsocket"],
+      transports: ["websocket", "polling"],
       query: {
         token: JSON.parse(token),
       },

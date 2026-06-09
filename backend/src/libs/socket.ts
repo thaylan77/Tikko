@@ -16,6 +16,13 @@ export const initIO = (httpServer: Server): SocketIO => {
 
   io.on("connection", socket => {
     const { token } = socket.handshake.query;
+
+    if (typeof token !== "string") {
+      logger.error("io-onConnection: missing or invalid token");
+      socket.disconnect();
+      return;
+    }
+
     let tokenData = null;
     try {
       tokenData = verify(token, authConfig.secret);
