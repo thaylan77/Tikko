@@ -19,7 +19,7 @@ import User from "./User";
 import Whatsapp from "./Whatsapp";
 
 @Table
-class Ticket extends Model<Ticket> {
+class Ticket extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column

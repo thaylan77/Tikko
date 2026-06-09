@@ -22,7 +22,8 @@ interface Request {
 const CreateMessageService = async ({
   messageData
 }: Request): Promise<Message> => {
-  await Message.upsert(messageData);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await Message.upsert(messageData as any);
 
   const message = await Message.findByPk(messageData.id, {
     include: [

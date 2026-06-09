@@ -22,7 +22,7 @@ import UserQueue from "./UserQueue";
 import Whatsapp from "./Whatsapp";
 
 @Table
-class User extends Model<User> {
+class User extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column

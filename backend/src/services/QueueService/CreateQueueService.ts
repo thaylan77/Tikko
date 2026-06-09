@@ -59,7 +59,8 @@ const CreateQueueService = async (queueData: QueueData): Promise<Queue> => {
     throw new AppError(err.message);
   }
 
-  const queue = await Queue.create(queueData);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const queue = await Queue.create(queueData as any);
 
   return queue;
 };
