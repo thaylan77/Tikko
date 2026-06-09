@@ -17,11 +17,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          "material-ui": [
-            "@material-ui/core",
-            "@material-ui/icons",
-            "@material-ui/lab",
-          ],
+          mui: ["@mui/material", "@mui/icons-material", "@mui/lab"],
         },
       },
     },
@@ -38,9 +34,9 @@ export default defineConfig({
   optimizeDeps: {
     include: [
       "mic-recorder-to-mp3",
-      "@material-ui/core",
-      "@material-ui/icons",
-      "@material-ui/lab",
+      "@mui/material",
+      "@mui/icons-material",
+      "@mui/lab",
     ],
     exclude: [],
   },
