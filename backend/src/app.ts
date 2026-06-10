@@ -11,6 +11,7 @@ import uploadConfig from "./config/upload";
 import AppError from "./errors/AppError";
 import routes from "./routes";
 import { logger } from "./utils/logger";
+import { tenantStorage } from "./context/tenantContext";
 
 Sentry.init({ dsn: process.env.SENTRY_DSN });
 
@@ -24,6 +25,10 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
+// Estabelece o contexto multi-tenant por requisição; o isAuth preenche o companyId.
+app.use((req: Request, res: Response, next: NextFunction) => {
+  tenantStorage.run({}, () => next());
+});
 app.use(Sentry.Handlers.requestHandler());
 app.use("/public", express.static(uploadConfig.directory));
 app.use(routes);

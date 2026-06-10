@@ -3,11 +3,13 @@ import { Request, Response, NextFunction } from "express";
 
 import AppError from "../errors/AppError";
 import authConfig from "../config/auth";
+import { setTenantId } from "../context/tenantContext";
 
 interface TokenPayload {
   id: string;
   username: string;
   profile: string;
+  companyId: number;
   iat: number;
   exp: number;
 }
@@ -23,12 +25,15 @@ const isAuth = (req: Request, res: Response, next: NextFunction): void => {
 
   try {
     const decoded = verify(token, authConfig.secret);
-    const { id, profile } = decoded as TokenPayload;
+    const { id, profile, companyId } = decoded as TokenPayload;
 
     req.user = {
       id,
-      profile
+      profile,
+      companyId
     };
+
+    setTenantId(companyId);
   } catch (err) {
     throw new AppError(
       "Invalid token. We'll try to assign a new one on next request",
