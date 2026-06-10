@@ -20,6 +20,7 @@ import Ticket from "./Ticket";
 import Queue from "./Queue";
 import UserQueue from "./UserQueue";
 import Whatsapp from "./Whatsapp";
+import Company from "./Company";
 
 @Table
 class User extends Model {
@@ -27,6 +28,13 @@ class User extends Model {
   @AutoIncrement
   @Column
   id: number;
+
+  @ForeignKey(() => Company)
+  @Column
+  companyId: number;
+
+  @BelongsTo(() => Company)
+  company: Company;
 
   @Column
   name: string;

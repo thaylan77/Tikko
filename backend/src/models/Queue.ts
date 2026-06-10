@@ -8,13 +8,16 @@ import {
   AutoIncrement,
   AllowNull,
   Unique,
-  BelongsToMany
+  BelongsToMany,
+  ForeignKey,
+  BelongsTo
 } from "sequelize-typescript";
 import User from "./User";
 import UserQueue from "./UserQueue";
 
 import Whatsapp from "./Whatsapp";
 import WhatsappQueue from "./WhatsappQueue";
+import Company from "./Company";
 
 @Table
 class Queue extends Model {
@@ -22,6 +25,13 @@ class Queue extends Model {
   @AutoIncrement
   @Column
   id: number;
+
+  @ForeignKey(() => Company)
+  @Column
+  companyId: number;
+
+  @BelongsTo(() => Company)
+  company: Company;
 
   @AllowNull(false)
   @Unique

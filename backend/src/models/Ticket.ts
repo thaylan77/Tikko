@@ -17,6 +17,7 @@ import Message from "./Message";
 import Queue from "./Queue";
 import User from "./User";
 import Whatsapp from "./Whatsapp";
+import Company from "./Company";
 
 @Table
 class Ticket extends Model {
@@ -24,6 +25,13 @@ class Ticket extends Model {
   @AutoIncrement
   @Column
   id: number;
+
+  @ForeignKey(() => Company)
+  @Column
+  companyId: number;
+
+  @BelongsTo(() => Company)
+  company: Company;
 
   @Column({ defaultValue: "pending" })
   status: string;

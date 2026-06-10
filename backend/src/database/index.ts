@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
+import Company from "../models/Company";
 import User from "../models/User";
 import Setting from "../models/Setting";
 import Contact from "../models/Contact";
@@ -19,6 +20,7 @@ const dbConfig = require("../config/database");
 const sequelize = new Sequelize(dbConfig);
 
 const models = [
+  Company,
   User,
   Contact,
   Ticket,

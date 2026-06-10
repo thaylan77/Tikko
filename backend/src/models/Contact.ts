@@ -9,10 +9,13 @@ import {
   AllowNull,
   Unique,
   Default,
-  HasMany
+  HasMany,
+  ForeignKey,
+  BelongsTo
 } from "sequelize-typescript";
 import ContactCustomField from "./ContactCustomField";
 import Ticket from "./Ticket";
+import Company from "./Company";
 
 @Table
 class Contact extends Model {
@@ -20,6 +23,13 @@ class Contact extends Model {
   @AutoIncrement
   @Column
   id: number;
+
+  @ForeignKey(() => Company)
+  @Column
+  companyId: number;
+
+  @BelongsTo(() => Company)
+  company: Company;
 
   @Column
   name: string;
